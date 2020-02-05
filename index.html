@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nothing+You+Could+Do&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Berkshire+Swash&display=swap"
+      rel="stylesheet"
+    />
+    <title></title>
+    <style>
+      body {
+        font-family: "Nothing You Could Do", cursive;
+        margin: 0;
+      }
+
+      #top {
+        width: calc(100vw - 17px);
+        background-image: url(hogwarts.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        min-height: 400px;
+        margin-bottom: 50px;
+      }
+
+      h3 {
+        margin-top: 300px;
+        margin-left: 200px;
+        color: white;
+        font-size: 24px;
+        font-family: "Berkshire Swash", cursive;
+      }
+
+      .container {
+        display: grid;
+        grid-gap: 10px;
+      }
+      .info {
+        padding-top: 0;
+        margin-top: -10px;
+      }
+
+      h1 {
+        max-width: 960px;
+        margin: 40px auto;
+        font-size: 40px;
+        font-family: "Berkshire Swash", cursive;
+      }
+
+      #detail {
+        position: fixed;
+        top: 0;
+        left: auto;
+        height: 100vh;
+        width: 100vw;
+        background: hsla(26, 30%, 5%, 0.7);
+        overflow: scroll;
+        padding: 1vw;
+      }
+
+      #detail .close {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        font-size: 2rem;
+        background-color: white;
+        border-radius: 12px;
+        border: none;
+      }
+
+      #detail .item {
+        margin: 4rem auto;
+        padding: 4rem;
+        background: white;
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      @media screen and (min-width: 600px) {
+        .container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media screen and (min-width: 768px) {
+        .container {
+          grid-template-columns: repeat(3, 1fr);
+          max-width: 960px;
+          margin: 0 auto;
+        }
+      }
+
+      img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <header>
+    <div id="top">
+      <h3>Hogwartz 1991</h3>
+    </div>
+    <h1>Students</h1>
+  </header>
+
+  <body>
+    <section class="container"></section>
+    <template>
+      <article id="item">
+        <h2 class="name"></h2>
+        <p class="info"></p>
+      </article>
+    </template>
+
+    <section id="detail" class="hide">
+      <article class="item">
+        <button class="close">←</button>
+        <h2></h2>
+        <p class="info"></p>
+      </article>
+    </section>
+  </body>
+</html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", getJson);
+
+  let students = [];
+  const itemTemplate = document.querySelector("template");
+  const container = document.querySelector(".container");
+
+  async function getJson() {
+    // let jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+    let jsonData = await fetch("students1991.json");
+    students = await jsonData.json();
+    console.log(students);
+    showMenu();
+  }
+
+  function showMenu() {
+    container.innerHTML = "";
+    students.forEach(student => {
+      let clone = itemTemplate.cloneNode(true).content;
+      clone.querySelector("h2").textContent = student.fullname;
+      clone.querySelector(".info").textContent = student.house;
+
+      container.append(clone);
+
+      container.lastElementChild.addEventListener("click", () => {
+        showDetail(student);
+      });
+    });
+  }
+
+  function showDetail(student) {
+    document.querySelector("#detail").style.display = "block";
+    document
+      .querySelector("#detail .close")
+      .addEventListener("click", hideDetail);
+    document.querySelector("#detail h2").textContent = student.fullname;
+
+    document.querySelector("#detail .info").textContent = student.house;
+  }
+
+  function hideDetail() {
+    document.querySelector("#detail").style.display = "none";
+  }
+</script>
