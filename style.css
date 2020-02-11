@@ -1,0 +1,111 @@
+:root {
+  --primary-color: red;
+}
+
+[data-theme="Hufflepuff"] {
+  --primary-color: yellow;
+}
+
+[data-theme="Griffindor"] {
+  --primary-color: red;
+}
+
+[data-theme="Ravenclaw"] {
+  --primary-color: blue;
+}
+
+[data-theme="Slytherin"] {
+  --primary-color: green;
+}
+
+body {
+  font-family: "Nothing You Could Do", cursive;
+  margin: 0;
+}
+
+#top {
+  width: calc(100vw - 17px);
+  background-image: url(hogwarts.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  min-height: 400px;
+  margin-bottom: 50px;
+}
+
+h3 {
+  margin-top: 300px;
+  margin-left: 200px;
+  color: white;
+  font-size: 24px;
+  font-family: "Berkshire Swash", cursive;
+}
+
+.container {
+  display: grid;
+  grid-gap: 10px;
+}
+.info {
+  padding-top: 0;
+  margin-top: -10px;
+}
+
+h1 {
+  max-width: 960px;
+  margin: 40px auto;
+  font-size: 40px;
+  font-family: "Berkshire Swash", cursive;
+}
+
+#detail {
+  position: fixed;
+  top: 0;
+  left: auto;
+  height: 100vh;
+  width: 100vw;
+
+  background: hsla(26, 30%, 5%, 0.7);
+  overflow: scroll;
+  padding: 1vw;
+}
+
+#detail .close {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  font-size: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  border: none;
+}
+
+#detail .item {
+  margin: 4rem auto;
+  padding: 4rem;
+  background-color: var(--primary-color);
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.hide {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 960px;
+    margin: 0 auto;
+  }
+}
+
+img {
+  width: 100%;
+}
