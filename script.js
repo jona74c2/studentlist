@@ -17,7 +17,7 @@ function showMenu() {
   students.forEach(student => {
     let clone = itemTemplate.cloneNode(true).content;
     clone.querySelector("h2").textContent = student.fullname;
-    clone.querySelector(".info").textContent = student.house;
+    clone.querySelector(".house").textContent = student.house;
 
     container.append(clone);
 
@@ -32,7 +32,7 @@ function showDetail(student) {
   document.querySelector("#detail .close").addEventListener("click", hideDetail);
   document.querySelector("#detail h2").textContent = student.fullname;
 
-  document.querySelector("#detail .info").textContent = student.house;
+  document.querySelector("#detail .house").textContent = student.house;
   document.querySelector("#detail").dataset.theme = student.house;
 }
 
