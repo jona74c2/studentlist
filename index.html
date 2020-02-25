@@ -16,21 +16,35 @@
       </div>
       <h1>Students</h1>
     </header>
-    <p>
-      Houses <button class="filter" data-action="filter" data-filtertype="house" data-filter="Gryffindor">Gryffindor</button>
-      <button class="filter" data-action="filter" data-filtertype="house" data-filter="Slytherin">Slytherin</button>
-      <button class="filter" data-action="filter" data-filtertype="house" data-filter="Ravenclaw">Ravenclaw</button>
-      <button class="filter" data-action="filter" data-filtertype="house" data-filter="Hufflepuff">Hufflepuff</button>
-      <br /><br />
-      <button class="filter" data-action="filter" data-filtertype="player">Quidditch Players</button>
-      <button class="filter" data-action="filter" data-filtertype="captain">Quidditch Captains</button>
-      <button class="filter" data-action="filter" data-filtertype="prefect">Prefects</button>
-      <button class="filter" data-action="filter" data-filtertype="clubmember">Clubmembers</button>
-      <button class="filter" data-action="filter" data-filtertype="nonexpel">Non Expelled</button>
-      <button class="filter" data-action="filter" data-filtertype="expel">Expelled</button
-      ><!-- Probably not needed, but could be nice to have all filter -->
-      <button class="filter" data-action="filter" data-filter="*">All</button>
-    </p>
+    <h4>Filter</h4>
+    <section id="filter">
+      <p>
+        <button class="filter" data-action="filter" data-filtertype="house" data-filter="Gryffindor">Gryffindor</button>
+        <button class="filter" data-action="filter" data-filtertype="house" data-filter="Slytherin">Slytherin</button>
+        <button class="filter" data-action="filter" data-filtertype="house" data-filter="Ravenclaw">Ravenclaw</button>
+        <button class="filter" data-action="filter" data-filtertype="house" data-filter="Hufflepuff">Hufflepuff</button>
+        <br /><br />
+        <button class="filter" data-action="filter" data-filtertype="player">Quidditch Players</button>
+        <button class="filter" data-action="filter" data-filtertype="captain">Quidditch Captains</button>
+        <button class="filter" data-action="filter" data-filtertype="prefect">Prefects</button>
+        <button class="filter" data-action="filter" data-filtertype="clubmember">Clubmembers</button>
+        <button class="filter" data-action="filter" data-filtertype="nonexpel">Non Expelled</button>
+        <button class="filter" data-action="filter" data-filtertype="expel">Expelled</button
+        ><!-- Probably not needed, but could be nice to have all filter -->
+        <button class="filter" data-action="filter" data-filter="*">All</button>
+      </p>
+    </section>
+    <h4>Sort</h4>
+    <section id="sort">
+      <p data-action="sort" data-sort-direction="asc" data-sort="firstName">Firstname</p>
+      <p data-action="sort" data-sort-direction="asc" data-sort="lastName">Lastname</p>
+      <p data-action="sort" data-sort-direction="asc" data-sort="house">House</p>
+      <p data-action="sort" data-sort-direction="asc" data-sort="player">Quidditch Players</p>
+      <p data-action="sort" data-sort-direction="asc" data-sort="captain">Quidditch Captains</p>
+      <p data-action="sort" data-sort-direction="asc" data-sort="prefect">Prefects</p>
+      <p data-action="sort" data-sort-direction="asc" data-sort="clubmember">Clubmembers</p>
+    </section>
+
     <section class="container"></section>
     <template>
       <article id="item">

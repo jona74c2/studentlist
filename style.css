@@ -42,6 +42,46 @@ h3 {
   font-family: "Berkshire Swash", cursive;
 }
 
+h4 {
+  max-width: 920px;
+  margin: 40px auto 0px auto;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  font-family: "Berkshire Swash", cursive;
+  /*background-color: ;*/
+}
+
+#filter {
+  max-width: 960px;
+  margin: 0px auto 40px auto;
+}
+
+#sort {
+  max-width: 960px;
+  margin: 0px auto 40px auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.sortarrow_down {
+  text-decoration: underline;
+}
+
+.sortarrow_up {
+  text-decoration: underline;
+}
+
+.sortarrow_down::after {
+  content: "⇓";
+}
+
+.sortarrow_up::after {
+  content: "⇑";
+}
+
 .container {
   display: grid;
   grid-gap: 10px;

@@ -23,9 +23,17 @@ function start() {
   HTML.itemTemplate = document.querySelector("template");
   HTML.container = document.querySelector(".container");
 
+  settings.sortbool = false;
+  settings.filter = "*";
+  /* set eventlisteners */
   document.querySelectorAll(".filter").forEach(button => {
     button.addEventListener("click", filterButtonPressed);
     console.log("adding eventlisteners to filter");
+  });
+
+  document.querySelectorAll("#sort p").forEach(button => {
+    button.addEventListener("click", sortButtonPressed);
+    console.log("adding eventlisteners to sort");
   });
 
   getJson();
@@ -92,9 +100,15 @@ function filterButtonPressed() {
   buildList();
 }
 
+function sortButtonPressed() {
+  console.log("Sort sort");
+  settings.sort = this.dataset.sort;
+  buildList();
+}
+
 function buildList() {
   const listarray = filter();
-  //sort(listarray);
+  sort(listarray);
   displayList(listarray);
 }
 
@@ -114,6 +128,45 @@ function filter() {
   } else {
     const filteredStudents = allStudents.filter(student => student[settings.filtertype] === true);
     return filteredStudents;
+  }
+}
+
+function sort(listarray) {
+  document.querySelectorAll("#sort p").forEach(keyword => {
+    keyword.classList.remove("sortarrow_up");
+    keyword.classList.remove("sortarrow_down");
+  });
+  if (settings.oldsort === settings.sort && settings.sortbool) {
+    console.log("compareBackwards");
+    settings.sortbool = false;
+    document.querySelector(`[data-sort=${settings.sort}]`).classList.add("sortarrow_up");
+    return listarray.sort(compareBackwards);
+  } else {
+    console.log("compare");
+    settings.oldsort = settings.sort;
+    settings.sortbool = true;
+    document.querySelector(`[data-sort=${settings.sort}]`).classList.add("sortarrow_down");
+    return listarray.sort(compare);
+  }
+}
+
+function compare(a, b) {
+  /*   console.log(a[settings.sort]);
+  console.log(b[settings.sort]); */
+  if (a[settings.sort] < b[settings.sort]) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
+function compareBackwards(a, b) {
+  console.log(a[settings.sort]);
+  console.log(b[settings.sort]);
+  if (a[settings.sort] > b[settings.sort]) {
+    return -1;
+  } else {
+    return 1;
   }
 }
 
