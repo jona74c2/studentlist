@@ -1,9 +1,9 @@
 "use strict";
 document.addEventListener("DOMContentLoaded", start);
 
-let jsonData = [];
 let allStudents = [];
 const HTML = [];
+const settings = [];
 
 const Student = {
   firstName: "",
@@ -11,12 +11,22 @@ const Student = {
   middleName: "",
   nickName: undefined,
   img: undefined,
-  house: ""
+  house: "",
+  player: false,
+  captain: false,
+  prefect: false,
+  clubmember: false,
+  expel: false
 };
 
 function start() {
   HTML.itemTemplate = document.querySelector("template");
   HTML.container = document.querySelector(".container");
+
+  document.querySelectorAll(".filter").forEach(button => {
+    button.addEventListener("click", filterButtonPressed);
+    console.log("adding eventlisteners to filter");
+  });
 
   getJson();
 }
@@ -24,7 +34,7 @@ function start() {
 async function getJson() {
   // let jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
   let response = await fetch("students1991.json");
-  jsonData = await response.json();
+  let jsonData = await response.json();
   prepareObjects(jsonData);
 }
 
@@ -73,32 +83,70 @@ function prepareObjects(jsonData) {
 
     allStudents.push(studentElement);
   });
-  showMenu();
+  displayList(allStudents);
 }
 
-function showMenu() {
+function filterButtonPressed() {
+  settings.filter = this.dataset.filter;
+  settings.filtertype = this.dataset.filtertype;
+  buildList();
+}
+
+function buildList() {
+  const listarray = filter();
+  //sort(listarray);
+  displayList(listarray);
+}
+
+function filter() {
+  console.log("Filter filter: " + settings.filter);
+
+  if (settings.filter === "*") {
+    return allStudents;
+  } else if (settings.filtertype === "house") {
+    allStudents.forEach(student => console.log(student.house));
+    const filteredStudents = allStudents.filter(student => student[settings.filtertype] === settings.filter);
+    return filteredStudents;
+  } else if (settings.filtertype === "nonexpel") {
+    allStudents.forEach(student => console.log(student.expel));
+    const filteredStudents = allStudents.filter(student => student.expel === false);
+    return filteredStudents;
+  } else {
+    const filteredStudents = allStudents.filter(student => student[settings.filtertype] === true);
+    return filteredStudents;
+  }
+}
+
+function displayList(students) {
+  // clear the display
   HTML.container.innerHTML = "";
-  allStudents.forEach((student, index) => {
-    //Students are shown on the frontpage
-    let clone = HTML.itemTemplate.cloneNode(true).content;
 
-    clone.querySelector(".first_name").textContent = student.firstName;
-    if (student.nickName != undefined) {
-      clone.querySelector(".nick_name").textContent = student.nickName;
-    }
-    if (student.middleName != undefined) {
-      clone.querySelector(".middle_name").textContent = student.middleName;
-    }
+  // build a new list
+  students.forEach(displayStudent);
+}
 
-    clone.querySelector(".last_name").textContent = student.lastName;
+function displayStudent(student) {
+  //Students are shown on the frontpage
+  let clone = HTML.itemTemplate.content.cloneNode(true);
 
-    clone.querySelector(".house").textContent = student.house;
+  clone.querySelector(".first_name").textContent = student.firstName;
+  if (student.nickName != undefined) {
+    clone.querySelector(".nick_name").textContent = student.nickName;
+  }
+  if (student.middleName != undefined) {
+    clone.querySelector(".middle_name").textContent = student.middleName;
+  }
 
-    HTML.container.append(clone);
+  clone.querySelector(".last_name").textContent = student.lastName;
 
-    HTML.container.lastElementChild.addEventListener("click", () => {
-      showDetail(student);
-    });
+  clone.querySelector(".house").textContent = student.house;
+
+  HTML.container.append(clone);
+
+  //clone.addEventListener("click", function() {
+  HTML.container.lastElementChild.addEventListener("click", function() {
+    console.log("Student clicked");
+    showDetail(student);
   });
 }
 
