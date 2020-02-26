@@ -98,6 +98,10 @@ h1 {
   font-family: "Berkshire Swash", cursive;
 }
 
+.container .prefect {
+  width: 20%;
+}
+
 #detail {
   position: fixed;
   top: 0;
@@ -124,6 +128,40 @@ h1 {
   margin: 4rem auto;
   padding: 4rem;
   background-color: var(--primary-color);
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+#detail .prefect {
+  width: 20%;
+}
+
+#prefect_popup {
+  position: fixed;
+  top: 0;
+  left: auto;
+  height: 100vh;
+  width: 100vw;
+
+  background: hsla(26, 30%, 5%, 0.7);
+  overflow: scroll;
+  padding: 1vw;
+}
+
+#prefect_popup .close {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  font-size: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  border: none;
+}
+
+#prefect_popup .item {
+  margin: 4rem auto;
+  padding: 4rem;
+  background-color: white;
   max-width: 960px;
   margin: 0 auto;
 }

@@ -48,12 +48,14 @@
     <section class="container"></section>
     <template>
       <article id="item">
-        <h2 class="first_name"></h2>
-        <h2 class="nick_name"></h2>
-        <h2 class="middle_name"></h2>
-        <h2 class="last_name"></h2>
-        <img src="" alt="" />
-        <p class="house"></p>
+        <div class="student_name">
+          <h2 class="first_name"></h2>
+          <h2 class="nick_name"></h2>
+          <h2 class="middle_name"></h2>
+          <h2 class="last_name"></h2>
+          <p class="house"></p>
+        </div>
+        <img class="prefect" src="" alt="" />
       </article>
     </template>
 
@@ -64,10 +66,21 @@
         <h2 class="nick_name"></h2>
         <h2 class="middle_name"></h2>
         <h2 class="last_name"></h2>
-        <img src="" alt="" />
         <p class="house"></p>
+        <img class="prefect" src="" alt="" />
       </article>
     </section>
+
+    <section id="prefect_popup" class="hide">
+      <article class="item">
+        <button class="close">x</button>
+        <p></p>
+        <h2 class="first_name"></h2>
+        <h2 class="last_name"></h2>
+        <p></p>
+      </article>
+    </section>
+
     <script src="script.js"></script>
   </body>
 </html>

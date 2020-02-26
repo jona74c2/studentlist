@@ -1,0 +1,137 @@
+Admin
+
+
+Sort
+
+As an Admin I want to sort the list based on firstname to get a quick overview
+As an Admin I want to sort the list based on lastname to get a quick overview
+As an Admin I want to sort the list based on house to get a quick overview
+As an Admin I want to sort the list based on quidditch players to get a quick overview
+As an Admin I want to sort the list based on quidditch captains to get a quick overview
+As an Admin I want to sort the list based on prefects to get a quick overview
+As an Admin I want to sort the list based on club members to get a quick overview
+
+Filter
+
+As an Admin I want to filter the list based on house to get a quick overview
+As an Admin I want to filter the list based on quidditch players to get a quick overview
+As an Admin I want to filter the list based on quidditch captains to get a quick overview
+As an Admin I want to filter the list based on prefects to get a quick overview
+As an Admin I want to filter the list based on club members to get a quick overview
+As an Admin I want to filter the list based on non-expelled students to get a quick overview
+As an Admin I want to filter the list based on expelled students to get a quick overview
+
+
+Search
+
+As an Admin I want to search the list by firstname to get a quickly find a student
+As an Admin I want to search the list by lastname to get a quickly find a student
+
+
+Interface
+
+As an Admin I want to see the number of students in each house to get an overview
+As an Admin I want to see the total number of students to get an overview
+As an Admin I want to see the number of expelled students to get an overview
+As an Admin I want to see the number students currently being displayed to get an overview
+
+
+Popup
+
+As an Admin I want to see further details of a student to see more information
+As an Admin I want to see firstname as a detail of a student to see more information
+As an Admin I want to see lastname as a detail of a student to see more information
+As an Admin I want to see nickname as a detail of a student to see more information
+As an Admin I want to see middlename as a detail of a student to see more information
+As an Admin I want to see a photo as a detail of a student to see more information
+As an Admin I want to see house crest as a detail of a student to see more information
+As an Admin I want to see house colors as a detail of a student to see more information
+As an Admin I want to see bloodstatus as a detail of a student to see more information
+As an Admin I want to see if the student is a prefect as a detail of a student to see more information
+As an Admin I want to see if the student is expelled as a detail of a student to see more information
+As an Admin I want to see if the student is a member of inquisitorial squad or not as a detail of a student to see more information
+
+
+expelling
+
+As an Admin I want to expel individual students to keep the list up to date
+As an Admin I want to see the list of expelled students to see whom
+
+
+Prefects
+
+As an Admin I want to make any student a prefect to change it up
+As an Admin I want to revoke any student from being a prefect to change it up
+
+
+//Bloodstatus
+
+
+Inquisitorial Squad
+
+As an Admin I want to appoint any student to the Inquisitorial Squad to change it up
+As an Admin I want to remove any student from the Inquisitorial Squad to change it up
+
+
+Hacking
+
+As a Software developer I want to hack myself onto the list of students to inject myself
+As a Software developer I want to be unexpelable to protect my hack
+As a Software developer I want to mix up bloodstatuses to set my own political views
+As a Software developer I want all inquisitorial squad members removed to set my own political views
+As a Software developer I want newly added inquisitorial squad members removed to set my own political views
+
+
+
+Software needs
+
+List of students sortable with popup with detailed information. A student contains firstname, lastname
+and house, and maybe nickname. This is sortable. The popup contains these, and also photo, house-colors and house-crest.
+Popup shows if the student is a prefect and/or inquisitorial squad.
+Algorithm 
+
+
+
+Code
+
+Functions
+
+start
+getJSON
+cleanData
+
+
+List of main components
+
+Get JSON
+Clean Data
+Show studentlist
+List of expelled students
+Sort
+Filter
+Search
+Prefect
+Popup
+Expel
+Hack
+Inquisitorial Squad
+
+
+Colors:
+
+Ravenclaw:
+main 3f4bbc
+darkmain 000a90
+secondary 946b2d
+
+hufflepuff
+main eee117
+secondary black
+
+slytherin
+main 0d6217
+secondary 000000
+
+gryffindor
+main red 7f0909
+secondary ffc500

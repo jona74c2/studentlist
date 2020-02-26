@@ -12,6 +12,7 @@ const Student = {
   nickName: undefined,
   img: undefined,
   house: "",
+  gender: "",
   player: false,
   captain: false,
   prefect: false,
@@ -25,13 +26,14 @@ function start() {
 
   settings.sortbool = false;
   settings.filter = "*";
+  settings.sort = "*";
   /* set eventlisteners */
   document.querySelectorAll(".filter").forEach(button => {
     button.addEventListener("click", filterButtonPressed);
     console.log("adding eventlisteners to filter");
   });
 
-  document.querySelectorAll("#sort p").forEach(button => {
+  document.querySelectorAll("#sort > p").forEach(button => {
     button.addEventListener("click", sortButtonPressed);
     console.log("adding eventlisteners to sort");
   });
@@ -49,6 +51,7 @@ async function getJson() {
 function prepareObjects(jsonData) {
   jsonData.forEach(jsonObject => {
     let studentElement = Object.create(Student);
+    studentElement.gender = jsonObject.gender;
     //clone.querySelector("h2").textContent = student.fullname;
     //clone.querySelector(".house").textContent = student.house;
     const name = jsonObject.fullname.split(" ");
@@ -102,6 +105,13 @@ function filterButtonPressed() {
 
 function sortButtonPressed() {
   console.log("Sort sort");
+
+  if (this.dataset.sort === settings.sort && settings.sortbool === false) {
+    settings.sortbool = true;
+  } else {
+    settings.sortbool = false;
+  }
+  settings.oldsort = settings.sort;
   settings.sort = this.dataset.sort;
   buildList();
 }
@@ -132,19 +142,18 @@ function filter() {
 }
 
 function sort(listarray) {
-  document.querySelectorAll("#sort p").forEach(keyword => {
+  document.querySelectorAll("#sort > p").forEach(keyword => {
     keyword.classList.remove("sortarrow_up");
     keyword.classList.remove("sortarrow_down");
   });
-  if (settings.oldsort === settings.sort && settings.sortbool) {
+  if (settings.sort === "*") {
+    return listarray;
+  } else if (settings.oldsort === settings.sort && settings.sortbool) {
     console.log("compareBackwards");
-    settings.sortbool = false;
     document.querySelector(`[data-sort=${settings.sort}]`).classList.add("sortarrow_up");
     return listarray.sort(compareBackwards);
   } else {
     console.log("compare");
-    settings.oldsort = settings.sort;
-    settings.sortbool = true;
     document.querySelector(`[data-sort=${settings.sort}]`).classList.add("sortarrow_down");
     return listarray.sort(compare);
   }
@@ -192,21 +201,28 @@ function displayStudent(student) {
 
   clone.querySelector(".last_name").textContent = student.lastName;
 
+  clone.querySelector(".prefect").src = choosePrefectImg(student.house, student.prefect);
   clone.querySelector(".house").textContent = student.house;
+  clone.querySelector(".student_name").addEventListener("click", function() {
+    console.log("Student clicked");
+    showDetail(student);
+  });
+  clone.querySelector(".prefect").addEventListener("click", function() {
+    setPrefect(student);
+  });
 
   HTML.container.append(clone);
 
   //clone.addEventListener("click", function() {
-  HTML.container.lastElementChild.addEventListener("click", function() {
-    console.log("Student clicked");
-    showDetail(student);
-  });
 }
 
 function showDetail(student) {
   //detail of the student is shown through this code
-  document.querySelector("#detail").style.display = "block";
-  document.querySelector("#detail .close").addEventListener("click", hideDetail);
+  document.querySelector("#detail").classList.remove("hide");
+  //document.querySelector("#detail").style.display = "block";
+  document.querySelector("#detail .close").addEventListener("click", function() {
+    hideDetail("#detail");
+  });
   document.querySelector("#detail").dataset.theme = student.house;
 
   document.querySelector("#detail .first_name").textContent = student.firstName;
@@ -220,15 +236,52 @@ function showDetail(student) {
   }
 
   document.querySelector("#detail .last_name").textContent = student.lastName;
-
+  document.querySelector("#detail .prefect").src = choosePrefectImg(student.house, student.prefect);
   document.querySelector("#detail .house").textContent = student.house;
 }
 
-function hideDetail() {
-  document.querySelector("#detail").style.display = "none";
+function hideDetail(popup) {
+  document.querySelector(popup).classList.add("hide");
 }
 
 function capitalization(str) {
   let str1 = str.toLowerCase();
   return str1[0].toUpperCase() + str1.substring(1, str1.length);
+}
+
+function choosePrefectImg(house, prefect) {
+  if (prefect) {
+    return `/img/${house}Prefect.svg`;
+  } else {
+    return `/img/${house}NoPrefect.svg`;
+  }
+}
+
+function setPrefect(student) {
+  if (student.prefect) {
+    student.prefect = false;
+    buildList();
+  }
+  //check if there is a student from the same house, with the same gender, who already is a prefect
+  //if true, open popup
+  else if (allStudents.some(prefect => prefect.house === student.house && prefect.prefect && student.gender === prefect.gender)) {
+    console.log("popup");
+    //document.querySelector("#prefect_popup").classList.remove("hide");/*  */
+    document.querySelector("#prefect_popup").classList.remove("hide");
+    document.querySelector("#prefect_popup .close").addEventListener("click", function() {
+      hideDetail("#prefect_popup");
+    });
+    const currentPrefect = allStudents.filter(filterstudent => {
+      if (filterstudent.prefect && filterstudent.house === student.house && filterstudent.gender === student.gender) {
+        return filterstudent;
+      }
+    });
+    console.table(currentPrefect);
+    //let prefect = allStudents.some(prefect => prefect.house === student.house && prefect.prefect && student.gender === prefect.gender);
+    document.querySelector("#prefect_popup .first_name").textContent = currentPrefect[0].firstName; /*  */
+    document.querySelector("#prefect_popup .last_name").textContent = currentPrefect[0].lastName; /*  */
+  } else {
+    student.prefect = true;
+    buildList();
+  }
 }
