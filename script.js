@@ -267,21 +267,45 @@ function setPrefect(student) {
   else if (allStudents.some(prefect => prefect.house === student.house && prefect.prefect && student.gender === prefect.gender)) {
     console.log("popup");
     //document.querySelector("#prefect_popup").classList.remove("hide");/*  */
-    document.querySelector("#prefect_popup").classList.remove("hide");
-    document.querySelector("#prefect_popup .close").addEventListener("click", function() {
-      hideDetail("#prefect_popup");
-    });
+
     const currentPrefect = allStudents.filter(filterstudent => {
       if (filterstudent.prefect && filterstudent.house === student.house && filterstudent.gender === student.gender) {
         return filterstudent;
       }
     });
     console.table(currentPrefect);
+    messagePopup(currentPrefect[0], student, "#prefect_popup", "Are you sure you want to remove current prefect", "togglePrefect");
     //let prefect = allStudents.some(prefect => prefect.house === student.house && prefect.prefect && student.gender === prefect.gender);
-    document.querySelector("#prefect_popup .first_name").textContent = currentPrefect[0].firstName; /*  */
-    document.querySelector("#prefect_popup .last_name").textContent = currentPrefect[0].lastName; /*  */
   } else {
     student.prefect = true;
+    buildList();
+  }
+}
+
+function messagePopup(currentPrefect, student, section, message, func) {
+  document.querySelector(section).classList.remove("hide");
+  document.querySelector(section + " " + ".close").addEventListener("click", function() {
+    hideDetail(section);
+  });
+  document.querySelector(section + " " + "p").textContent = message;
+  document.querySelector(section + " " + "h2").textContent = `${currentPrefect.firstName} ${currentPrefect.lastName}?`;
+  document.querySelector(section + " " + ".accept_button").textContent = "Yes";
+  document.querySelector(section + " " + ".accept_button").addEventListener("click", function() {
+    window[func](currentPrefect, student);
+    document.querySelector(section).classList.add("hide");
+    console.log("Student prefect removed");
+  });
+  /*   document.querySelector("#prefect_popup .first_name").textContent = currentPrefect[0].firstName;
+  document.querySelector("#prefect_popup .last_name").textContent = currentPrefect[0].lastName; */
+}
+
+function togglePrefect(currentPrefect, student) {
+  student.prefect = true;
+  if (currentPrefect.prefect) {
+    currentPrefect.prefect = false;
+    buildList();
+  } else {
+    currentPrefect.prefect = true;
     buildList();
   }
 }
