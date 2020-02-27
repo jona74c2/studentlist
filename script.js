@@ -183,6 +183,8 @@ function displayList(students) {
   // clear the display
   HTML.container.innerHTML = "";
 
+  // set list details in the top
+  prepareListDetails(students);
   // build a new list
   students.forEach(displayStudent);
 }
@@ -308,4 +310,35 @@ function togglePrefect(currentPrefect, student) {
     currentPrefect.prefect = true;
     buildList();
   }
+}
+
+function prepareListDetails(filterStudents) {
+  const gryffindor = allStudents.filter(student => student.house === "Gryffindor" && !student.expel);
+  const slytherin = allStudents.filter(student => student.house === "Slytherin");
+  const hufflepuff = allStudents.filter(student => student.house === "Hufflepuff");
+  const ravenclaw = allStudents.filter(student => student.house === "Ravenclaw");
+  const expel = allStudents.filter(student => student.expel);
+  const nonexpel = allStudents.filter(student => !student.expel);
+  const current = filterStudents.filter(student => !student.expel);
+
+  const object = {
+    gryffindor: gryffindor.length,
+    hufflepuff: hufflepuff.length,
+    slytherin: slytherin.length,
+    ravenclaw: ravenclaw.length,
+    expel: expel.length,
+    nonexpel: nonexpel.length,
+    current: current.length
+  };
+  displayListDetails(object);
+}
+
+function displayListDetails(object) {
+  document.querySelector("#list_details #Gryffindor").textContent = `Students in Gryffindor: ${object.gryffindor}`;
+  document.querySelector("#list_details #Slytherin").textContent = `Students in Slytherin: ${object.slytherin}`;
+  document.querySelector("#list_details #Hufflepuff").textContent = `Students in Hufflepuff: ${object.hufflepuff}`;
+  document.querySelector("#list_details #Ravenclaw").textContent = `Students in Ravenclaw: ${object.ravenclaw}`;
+  document.querySelector("#list_details #nonexpel").textContent = `Students: ${object.nonexpel}`;
+  document.querySelector("#list_details #expel").textContent = `Expelled students: ${object.expel}`;
+  document.querySelector("#list_details #current").textContent = `Students currently shown: ${object.current}`;
 }

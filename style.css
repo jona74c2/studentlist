@@ -54,6 +54,11 @@ button {
   /*background-color: ;*/
 }
 
+#list_details {
+  max-width: 960px;
+  margin: 0px auto 40px auto;
+}
+
 #filter {
   max-width: 960px;
   margin: 0px auto 40px auto;
