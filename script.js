@@ -4,6 +4,12 @@ document.addEventListener("DOMContentLoaded", start);
 let allStudents = [];
 const HTML = [];
 const settings = [];
+let asyncCounter = 0;
+
+let jsonDataStudents = [];
+let jsonDataFamilies = [];
+/* const jsonData0 = [];
+const jsonData1 = []; */
 
 const Student = {
   firstName: "",
@@ -17,7 +23,8 @@ const Student = {
   captain: false,
   prefect: false,
   clubmember: false,
-  expel: false
+  expel: false,
+  bloodstatus: ""
 };
 
 function start() {
@@ -37,15 +44,30 @@ function start() {
     button.addEventListener("click", sortButtonPressed);
     console.log("adding eventlisteners to sort");
   });
-
-  getJson();
+  console.log("getJson");
+  getJson("students1991.json", 1);
+  getJson("//petlatkea.dk/2020/hogwarts/families.json", 2);
 }
 
-async function getJson() {
-  // let jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
-  let response = await fetch("students1991.json");
+async function getJson(url, number) {
+  let response = await fetch(url);
   let jsonData = await response.json();
-  prepareObjects(jsonData);
+  asyncCounter++;
+  if (number == 1) {
+    jsonDataStudents = jsonData;
+  } else if (number == 2) {
+    jsonDataFamilies = jsonData;
+  }
+  //array = jsonData;
+  window["jsonData" + asyncCounter] = jsonData;
+  if (asyncCounter == 2) {
+    asyncLoaded();
+  }
+}
+
+function asyncLoaded() {
+  console.log("Async Loaded");
+  prepareObjects(jsonDataStudents);
 }
 
 function prepareObjects(jsonData) {
@@ -66,6 +88,7 @@ function prepareObjects(jsonData) {
       if (name[i][0] == '"') {
         studentElement.nickName = name[i].toLowerCase();
         studentElement.nickName = studentElement.nickName[0] + studentElement.nickName[1].toUpperCase() + studentElement.nickName.substring(2, studentElement.nickName.length);
+
         name.splice(i, 1);
         i--;
       } else {
@@ -94,6 +117,7 @@ function prepareObjects(jsonData) {
 
     allStudents.push(studentElement);
   });
+  setBloodStatus(jsonDataFamilies);
   displayList(allStudents);
 }
 
@@ -179,6 +203,18 @@ function compareBackwards(a, b) {
   }
 }
 
+function setBloodStatus(array) {
+  allStudents.forEach(student => {
+    if (array.half.some(family => family === student.lastName)) {
+      student.bloodstatus = "half";
+    } else if (array.pure.some(family => family === student.lastName)) {
+      student.bloodstatus = "pure";
+    } else {
+      student.bloodstatus = "muggle";
+    }
+  });
+}
+
 function displayList(students) {
   // clear the display
   HTML.container.innerHTML = "";
@@ -186,7 +222,13 @@ function displayList(students) {
   // set list details in the top
   prepareListDetails(students);
   // build a new list
-  students.forEach(displayStudent);
+  students.forEach(student => {
+    if (settings.filtertype === "expel" && student.expel) {
+      displayStudent(student);
+    } else if (!student.expel) {
+      displayStudent(student);
+    }
+  });
 }
 
 function displayStudent(student) {
@@ -204,13 +246,25 @@ function displayStudent(student) {
   clone.querySelector(".last_name").textContent = student.lastName;
 
   clone.querySelector(".prefect").src = choosePrefectImg(student.house, student.prefect);
-  clone.querySelector(".house").textContent = student.house;
+  clone.querySelector(".blood").src = chooseBloodImg(student.bloodstatus);
+
+  //clone.querySelector(".house").textContent = student.house;
+
   clone.querySelector(".student_name").addEventListener("click", function() {
     console.log("Student clicked");
     showDetail(student);
   });
   clone.querySelector(".prefect").addEventListener("click", function() {
     setPrefect(student);
+  });
+  if (student.expel) {
+    clone.querySelector(".expel_button").textContent = "unexpel";
+  } else {
+    clone.querySelector(".expel_button").textContent = "expel";
+  }
+
+  clone.querySelector(".expel_button").addEventListener("click", function() {
+    toggleExpel(student);
   });
 
   HTML.container.append(clone);
@@ -239,7 +293,9 @@ function showDetail(student) {
 
   document.querySelector("#detail .last_name").textContent = student.lastName;
   document.querySelector("#detail .prefect").src = choosePrefectImg(student.house, student.prefect);
-  document.querySelector("#detail .house").textContent = student.house;
+  document.querySelector("#detail .blood").src = chooseBloodImg(student.bloodstatus);
+  document.querySelector(".profile").src = chooseProfileImg(student);
+  //document.querySelector("#detail .house").textContent = student.house;
 }
 
 function hideDetail(popup) {
@@ -256,6 +312,26 @@ function choosePrefectImg(house, prefect) {
     return `/img/${house}Prefect.svg`;
   } else {
     return `/img/${house}NoPrefect.svg`;
+  }
+}
+
+function chooseBloodImg(str) {
+  if (str === "pure") {
+    return `/img/pureblood.svg`;
+  } else if (str === "half") {
+    return `/img/halfblood.svg`;
+  } else {
+    return `/img/muggleblood.svg`;
+  }
+}
+
+function chooseProfileImg(student) {
+  if (student.firstName === "Padma") {
+    return `/img/profiles/${student.lastName.toLowerCase()}_${student.firstName.toLowerCase().substring(0, student.firstName.length - 1)}e.png`;
+  } else if (student.firstName === "Parvati") {
+    return `/img/profiles/${student.lastName.toLowerCase()}_${student.firstName.toLowerCase()}.png`;
+  } else {
+    return `/img/profiles/${student.lastName.toLowerCase()}_${student.firstName[0].toLowerCase()}.png`;
   }
 }
 
@@ -312,11 +388,22 @@ function togglePrefect(currentPrefect, student) {
   }
 }
 
+function toggleExpel(student) {
+  console.log("Expelling student");
+  if (student.expel) {
+    student.expel = false;
+    buildList();
+  } else {
+    student.expel = true;
+    buildList();
+  }
+}
+
 function prepareListDetails(filterStudents) {
   const gryffindor = allStudents.filter(student => student.house === "Gryffindor" && !student.expel);
-  const slytherin = allStudents.filter(student => student.house === "Slytherin");
-  const hufflepuff = allStudents.filter(student => student.house === "Hufflepuff");
-  const ravenclaw = allStudents.filter(student => student.house === "Ravenclaw");
+  const slytherin = allStudents.filter(student => student.house === "Slytherin" && !student.expel);
+  const hufflepuff = allStudents.filter(student => student.house === "Hufflepuff" && !student.expel);
+  const ravenclaw = allStudents.filter(student => student.house === "Ravenclaw" && !student.expel);
   const expel = allStudents.filter(student => student.expel);
   const nonexpel = allStudents.filter(student => !student.expel);
   const current = filterStudents.filter(student => !student.expel);
