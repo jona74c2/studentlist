@@ -264,7 +264,8 @@ function displayStudent(student) {
   }
 
   clone.querySelector(".expel_button").addEventListener("click", function() {
-    toggleExpel(student);
+    toggle(student.expel);
+    buildList();
   });
 
   HTML.container.append(clone);
@@ -352,7 +353,7 @@ function setPrefect(student) {
       }
     });
     console.table(currentPrefect);
-    messagePopup(currentPrefect[0], student, "#prefect_popup", "Are you sure you want to remove current prefect", "togglePrefect");
+    messagePopup(currentPrefect[0], student, "#prefect_popup", "Are you sure you want to remove current prefect");
     //let prefect = allStudents.some(prefect => prefect.house === student.house && prefect.prefect && student.gender === prefect.gender);
   } else {
     student.prefect = true;
@@ -360,7 +361,7 @@ function setPrefect(student) {
   }
 }
 
-function messagePopup(currentPrefect, student, section, message, func) {
+function messagePopup(currentPrefect, student, section, message) {
   document.querySelector(section).classList.remove("hide");
   document.querySelector(section + " " + ".close").addEventListener("click", function() {
     hideDetail(section);
@@ -369,33 +370,18 @@ function messagePopup(currentPrefect, student, section, message, func) {
   document.querySelector(section + " " + "h2").textContent = `${currentPrefect.firstName} ${currentPrefect.lastName}?`;
   document.querySelector(section + " " + ".accept_button").textContent = "Yes";
   document.querySelector(section + " " + ".accept_button").addEventListener("click", function() {
-    window[func](currentPrefect, student);
+    currentPrefect.prefect = toggle(currentPrefect.prefect);
+    student.prefect = true;
     document.querySelector(section).classList.add("hide");
-    console.log("Student prefect removed");
+    buildList();
   });
-  /*   document.querySelector("#prefect_popup .first_name").textContent = currentPrefect[0].firstName;
-  document.querySelector("#prefect_popup .last_name").textContent = currentPrefect[0].lastName; */
 }
 
-function togglePrefect(currentPrefect, student) {
-  student.prefect = true;
-  if (currentPrefect.prefect) {
-    currentPrefect.prefect = false;
-    buildList();
+function toggle(statement) {
+  if (statement) {
+    return false;
   } else {
-    currentPrefect.prefect = true;
-    buildList();
-  }
-}
-
-function toggleExpel(student) {
-  console.log("Expelling student");
-  if (student.expel) {
-    student.expel = false;
-    buildList();
-  } else {
-    student.expel = true;
-    buildList();
+    return true;
   }
 }
 
