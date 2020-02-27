@@ -45,6 +45,8 @@ function start() {
     button.addEventListener("click", sortButtonPressed);
     console.log("adding eventlisteners to sort");
   });
+
+  document.querySelector("#search_input").addEventListener("input", search);
   console.log("getJson");
   getJson("students1991.json", 1);
   getJson("//petlatkea.dk/2020/hogwarts/families.json", 2);
@@ -112,6 +114,8 @@ function prepareObjects(jsonData) {
     if (name.length > 2) {
       studentElement.middleName = name[1];
       studentElement.lastName = name[2];
+    } else if (name.length === 1) {
+      studentElement.lastName = "";
     } else {
       studentElement.lastName = name[1];
     }
@@ -120,6 +124,11 @@ function prepareObjects(jsonData) {
   });
   setBloodStatus(jsonDataFamilies);
   displayList(allStudents);
+}
+
+function search() {
+  settings.search = this.value;
+  buildList();
 }
 
 function filterButtonPressed() {
@@ -142,14 +151,32 @@ function sortButtonPressed() {
 }
 
 function buildList() {
+  //let newArray = [];
   const listarray = filter();
+
   sort(listarray);
-  displayList(listarray);
+  const searchResult = listarray.filter(student => student.firstName.toLowerCase().includes(settings.search) || student.lastName.toLowerCase().includes(settings.search));
+  /*   if (searchResult != undefined) {
+    listarray.forEach(item => {
+      searchResult.forEach(search => {
+        console.log("item: ");
+        console.log(item);
+        console.log("search");
+        console.log(search);
+        if (Object.is(item, search)) {
+          newArray.push(item);
+        }
+      });
+    });
+    displayList(newArray);
+  } else {
+    displayList(listarray);
+  } */
+
+  displayList(searchResult);
 }
 
 function filter() {
-  console.log("Filter filter: " + settings.filter);
-
   if (settings.filter === "*") {
     return allStudents;
   } else if (settings.filtertype === "house") {
@@ -301,6 +328,7 @@ function showDetail(student) {
   document.querySelector("#detail .prefect").src = choosePrefectImg(student.house, student.prefect);
   document.querySelector("#detail .blood").src = chooseBloodImg(student.bloodstatus);
   document.querySelector(".profile").src = chooseProfileImg(student);
+  document.querySelector("#detail .is").src = chooseIsImg(student.is);
   //document.querySelector("#detail .house").textContent = student.house;
 }
 
@@ -424,7 +452,15 @@ function prepareListDetails(filterStudents) {
   const ravenclaw = allStudents.filter(student => student.house === "Ravenclaw" && !student.expel);
   const expel = allStudents.filter(student => student.expel);
   const nonexpel = allStudents.filter(student => !student.expel);
+  console.table(filterStudents);
   const current = filterStudents.filter(student => !student.expel);
+  /*let current;
+  if (filterStudents != undefined) {
+    current = filterStudents.filter(student => !student.expel);
+  }
+  else{
+    current = 0;
+  }*/
 
   const object = {
     gryffindor: gryffindor.length,
