@@ -24,7 +24,8 @@ const Student = {
   prefect: false,
   clubmember: false,
   expel: false,
-  bloodstatus: ""
+  bloodstatus: "",
+  is: false
 };
 
 function start() {
@@ -247,6 +248,7 @@ function displayStudent(student) {
 
   clone.querySelector(".prefect").src = choosePrefectImg(student.house, student.prefect);
   clone.querySelector(".blood").src = chooseBloodImg(student.bloodstatus);
+  clone.querySelector(".is").src = chooseIsImg(student.is);
 
   //clone.querySelector(".house").textContent = student.house;
 
@@ -256,6 +258,9 @@ function displayStudent(student) {
   });
   clone.querySelector(".prefect").addEventListener("click", function() {
     setPrefect(student);
+  });
+  clone.querySelector(".is").addEventListener("click", function() {
+    setIs(student);
   });
   if (student.expel) {
     clone.querySelector(".expel_button").textContent = "unexpel";
@@ -336,6 +341,29 @@ function chooseProfileImg(student) {
   }
 }
 
+function chooseIsImg(bool) {
+  console.log("Choose IS bool: " + bool);
+  if (bool) {
+    console.log("The real IS");
+    return `/img/is.svg`;
+  } else {
+    return `/img/nonis.svg`;
+  }
+}
+
+function setIs(student) {
+  if (student.is) {
+    student.is = false;
+    buildList();
+  } else if (student.bloodstatus != "pure" && student.house != "Slytherin") {
+    console.log(student);
+    messagePopup(student, "Student can't be added to Inquisitorial Squad due to fullblood requirement", student, false);
+  } else {
+    student.is = true;
+    buildList();
+  }
+}
+
 function setPrefect(student) {
   if (student.prefect) {
     student.prefect = false;
@@ -353,7 +381,7 @@ function setPrefect(student) {
       }
     });
     console.table(currentPrefect);
-    messagePopup(currentPrefect[0], student, "#prefect_popup", "Are you sure you want to remove current prefect");
+    messagePopup(student, "Are you sure you want to remove current prefect", currentPrefect[0], true);
     //let prefect = allStudents.some(prefect => prefect.house === student.house && prefect.prefect && student.gender === prefect.gender);
   } else {
     student.prefect = true;
@@ -361,18 +389,22 @@ function setPrefect(student) {
   }
 }
 
-function messagePopup(currentPrefect, student, section, message) {
-  document.querySelector(section).classList.remove("hide");
-  document.querySelector(section + " " + ".close").addEventListener("click", function() {
-    hideDetail(section);
+function messagePopup(student, message, currentPrefect, prefect) {
+  document.querySelector("#prefect_popup").classList.remove("hide");
+  document.querySelector("#prefect_popup" + " " + ".close").addEventListener("click", function() {
+    hideDetail("#prefect_popup");
   });
-  document.querySelector(section + " " + "p").textContent = message;
-  document.querySelector(section + " " + "h2").textContent = `${currentPrefect.firstName} ${currentPrefect.lastName}?`;
-  document.querySelector(section + " " + ".accept_button").textContent = "Yes";
-  document.querySelector(section + " " + ".accept_button").addEventListener("click", function() {
-    currentPrefect.prefect = toggle(currentPrefect.prefect);
-    student.prefect = true;
-    document.querySelector(section).classList.add("hide");
+  document.querySelector("#prefect_popup" + " " + "p").textContent = message;
+  currentPrefect != undefined;
+  document.querySelector("#prefect_popup" + " " + "h2").textContent = `${currentPrefect.firstName} ${currentPrefect.lastName}`;
+
+  document.querySelector("#prefect_popup" + " " + ".accept_button").textContent = "OK";
+  document.querySelector("#prefect_popup" + " " + ".accept_button").addEventListener("click", function() {
+    if (prefect) {
+      currentPrefect.prefect = toggle(currentPrefect.prefect);
+      student.prefect = true;
+    }
+    document.querySelector("#prefect_popup").classList.add("hide");
     buildList();
   });
 }

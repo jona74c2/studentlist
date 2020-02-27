@@ -115,6 +115,10 @@ h1 {
   width: 5%;
 }
 
+.is {
+  width: 25%;
+}
+
 #detail {
   position: fixed;
   top: 0;
