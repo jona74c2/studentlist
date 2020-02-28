@@ -35,6 +35,7 @@ function start() {
   settings.sortbool = false;
   settings.filter = "*";
   settings.sort = "*";
+  settings.hack = false;
   /* set eventlisteners */
   document.querySelectorAll(".filter").forEach(button => {
     button.addEventListener("click", filterButtonPressed);
@@ -155,25 +156,12 @@ function buildList() {
   const listarray = filter();
 
   sort(listarray);
-  const searchResult = listarray.filter(student => student.firstName.toLowerCase().includes(settings.search) || student.lastName.toLowerCase().includes(settings.search));
-  /*   if (searchResult != undefined) {
-    listarray.forEach(item => {
-      searchResult.forEach(search => {
-        console.log("item: ");
-        console.log(item);
-        console.log("search");
-        console.log(search);
-        if (Object.is(item, search)) {
-          newArray.push(item);
-        }
-      });
-    });
-    displayList(newArray);
+  if (settings.search != undefined && settings.search != "") {
+    const searchResult = listarray.filter(student => student.firstName.toLowerCase().includes(settings.search) || student.lastName.toLowerCase().includes(settings.search));
+    displayList(searchResult);
   } else {
     displayList(listarray);
-  } */
-
-  displayList(searchResult);
+  }
 }
 
 function filter() {
@@ -296,7 +284,7 @@ function displayStudent(student) {
   }
 
   clone.querySelector(".expel_button").addEventListener("click", function() {
-    toggle(student.expel);
+    student.expel = toggle(student.expel);
     buildList();
   });
 
@@ -437,8 +425,8 @@ function messagePopup(student, message, currentPrefect, prefect) {
   });
 }
 
-function toggle(statement) {
-  if (statement) {
+function toggle(bool) {
+  if (bool) {
     return false;
   } else {
     return true;
@@ -482,4 +470,10 @@ function displayListDetails(object) {
   document.querySelector("#list_details #nonexpel").textContent = `Students: ${object.nonexpel}`;
   document.querySelector("#list_details #expel").textContent = `Expelled students: ${object.expel}`;
   document.querySelector("#list_details #current").textContent = `Students currently shown: ${object.current}`;
+}
+
+function hackTheSystem() {
+  if (!settings.hack) {
+    console.log("Hack The System");
+  }
 }
