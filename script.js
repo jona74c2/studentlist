@@ -156,6 +156,11 @@ function buildList() {
   const listarray = filter();
 
   sort(listarray);
+
+  if (settings.hack) {
+    hackBloodstatus(jsonDataFamilies);
+  }
+
   if (settings.search != undefined && settings.search != "") {
     const searchResult = listarray.filter(student => student.firstName.toLowerCase().includes(settings.search) || student.lastName.toLowerCase().includes(settings.search));
     displayList(searchResult);
@@ -231,6 +236,21 @@ function setBloodStatus(array) {
   });
 }
 
+function hackBloodstatus(array) {
+  allStudents.forEach(student => {
+    if (array.pure.some(family => family === student.lastName)) {
+      const random = Math.random();
+      if (random < 0.5) {
+        student.bloodstatus = "half";
+      } else {
+        student.bloodstatus = "muggle";
+      }
+    } else {
+      student.bloodstatus = "pure";
+    }
+  });
+}
+
 function displayList(students) {
   // clear the display
   HTML.container.innerHTML = "";
@@ -284,8 +304,7 @@ function displayStudent(student) {
   }
 
   clone.querySelector(".expel_button").addEventListener("click", function() {
-    student.expel = toggle(student.expel);
-    buildList();
+    expelStudent(student);
   });
 
   HTML.container.append(clone);
@@ -421,6 +440,15 @@ function messagePopup(student, message, currentPrefect, prefect) {
     document.querySelector("#prefect_popup").classList.add("hide");
     buildList();
   });
+}
+
+function expelStudent(student) {
+  if (student.firstName == "Jonas") {
+    messagePopup(student, "haHAA no expelliamus today", student, false);
+  } else {
+    student.expel = toggle(student.expel);
+    buildList();
+  }
 }
 
 function toggle(bool) {

@@ -119,6 +119,11 @@ h1 {
   width: 25%;
 }
 
+#search {
+  max-width: 960px;
+  margin: 0px auto 40px auto;
+}
+
 #detail {
   position: fixed;
   top: 0;
