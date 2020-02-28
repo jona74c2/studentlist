@@ -289,8 +289,6 @@ function displayStudent(student) {
   });
 
   HTML.container.append(clone);
-
-  //clone.addEventListener("click", function() {
 }
 
 function showDetail(student) {
@@ -475,5 +473,24 @@ function displayListDetails(object) {
 function hackTheSystem() {
   if (!settings.hack) {
     console.log("Hack The System");
+    settings.hack = true;
+    addDeveloperToStudentList();
+    buildList();
+  } else {
+    console.log("System is already hacked, nothing happens");
   }
+}
+
+function addDeveloperToStudentList() {
+  const jonas = Object.create(Student);
+  jonas.firstName = "Jonas";
+  jonas.lastName = "Kjaer";
+  jonas.middleName = "Friis";
+  jonas.nickName = '"Jones"';
+  jonas.house = "Hufflepuff";
+  jonas.gender = "boy";
+  jonas.player = true;
+  jonas.captain = true;
+  jonas.bloodstatus = "muggle";
+  allStudents.push(jonas);
 }
