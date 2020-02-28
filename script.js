@@ -394,7 +394,22 @@ function setIs(student) {
   } else {
     student.is = true;
     buildList();
+    if (settings.hack) {
+      waitAndRemoveIs(student);
+    }
   }
+}
+
+function waitAndRemoveIs(student) {
+  // setTimeout(removeIs(student), 200);
+  setTimeout(function() {
+    removeIs(student);
+  }, 2000);
+}
+
+function removeIs(student) {
+  student.is = false;
+  buildList();
 }
 
 function setPrefect(student) {
@@ -466,15 +481,7 @@ function prepareListDetails(filterStudents) {
   const ravenclaw = allStudents.filter(student => student.house === "Ravenclaw" && !student.expel);
   const expel = allStudents.filter(student => student.expel);
   const nonexpel = allStudents.filter(student => !student.expel);
-  console.table(filterStudents);
   const current = filterStudents.filter(student => !student.expel);
-  /*let current;
-  if (filterStudents != undefined) {
-    current = filterStudents.filter(student => !student.expel);
-  }
-  else{
-    current = 0;
-  }*/
 
   const object = {
     gryffindor: gryffindor.length,
@@ -503,6 +510,7 @@ function hackTheSystem() {
     console.log("Hack The System");
     settings.hack = true;
     addDeveloperToStudentList();
+    allStudents.forEach(waitAndRemoveIs);
     buildList();
   } else {
     console.log("System is already hacked, nothing happens");
