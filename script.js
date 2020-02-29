@@ -12,9 +12,9 @@ let jsonDataFamilies = [];
 const jsonData1 = []; */
 
 const Student = {
-  firstName: "",
+  firstName: undefined,
   lastName: undefined,
-  middleName: "",
+  middleName: undefined,
   nickName: undefined,
   img: undefined,
   house: "",
@@ -271,12 +271,12 @@ function displayStudent(student) {
   //Students are shown on the frontpage
   let clone = HTML.itemTemplate.content.cloneNode(true);
 
-  clone.querySelector(".first_name").textContent = student.firstName;
-  if (student.nickName != undefined) {
-    clone.querySelector(".nick_name").textContent = student.nickName;
-  }
   if (student.middleName != undefined) {
-    clone.querySelector(".middle_name").textContent = student.middleName;
+    clone.querySelector(".middle_name").textContent = `${student.firstName} ${student.middleName}`;
+  } else if (student.nickName != undefined) {
+    clone.querySelector(".nick_name").textContent = `${student.firstName} ${student.nickName}`;
+  } else {
+    clone.querySelector(".first_name").textContent = student.firstName;
   }
 
   clone.querySelector(".last_name").textContent = student.lastName;
@@ -319,14 +319,16 @@ function showDetail(student) {
   });
   document.querySelector("#detail").dataset.theme = student.house;
 
-  document.querySelector("#detail .first_name").textContent = student.firstName;
-  if (student.nickName != undefined) {
-    document.querySelector("#detail .nick_name").textContent = student.nickName;
-  } else {
-    document.querySelector("#detail .nick_name").textContent = "";
-  }
+  document.querySelector("#detail .middle_name").textContent = "";
+  document.querySelector("#detail .nick_name").textContent = "";
+  document.querySelector("#detail .first_name").textContent = "";
+
   if (student.middleName != undefined) {
-    document.querySelector("#detail .middle_name").textContent = student.middleName;
+    document.querySelector("#detail .middle_name").textContent = `${student.firstName} ${student.middleName}`;
+  } else if (student.nickName != undefined) {
+    document.querySelector("#detail .nick_name").textContent = `${student.firstName} ${student.nickName}`;
+  } else {
+    document.querySelector("#detail .first_name").textContent = student.firstName;
   }
 
   document.querySelector("#detail .last_name").textContent = student.lastName;
