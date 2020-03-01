@@ -350,29 +350,29 @@ function capitalization(str) {
 
 function choosePrefectImg(house, prefect) {
   if (prefect) {
-    return `/img/${house}Prefect.svg`;
+    return `img/${house}Prefect.svg`;
   } else {
-    return `/img/${house}NoPrefect.svg`;
+    return `img/${house}NoPrefect.svg`;
   }
 }
 
 function chooseBloodImg(str) {
   if (str === "pure") {
-    return `/img/pureblood.svg`;
+    return `img/pureblood.svg`;
   } else if (str === "half") {
-    return `/img/halfblood.svg`;
+    return `img/halfblood.svg`;
   } else {
-    return `/img/muggleblood.svg`;
+    return `img/muggleblood.svg`;
   }
 }
 
 function chooseProfileImg(student) {
   if (student.firstName === "Padma") {
-    return `/img/profiles/${student.lastName.toLowerCase()}_${student.firstName.toLowerCase().substring(0, student.firstName.length - 1)}e.png`;
+    return `img/profiles/${student.lastName.toLowerCase()}_${student.firstName.toLowerCase().substring(0, student.firstName.length - 1)}e.png`;
   } else if (student.firstName === "Parvati") {
-    return `/img/profiles/${student.lastName.toLowerCase()}_${student.firstName.toLowerCase()}.png`;
+    return `img/profiles/${student.lastName.toLowerCase()}_${student.firstName.toLowerCase()}.png`;
   } else {
-    return `/img/profiles/${student.lastName.toLowerCase()}_${student.firstName[0].toLowerCase()}.png`;
+    return `img/profiles/${student.lastName.toLowerCase()}_${student.firstName[0].toLowerCase()}.png`;
   }
 }
 
@@ -380,9 +380,9 @@ function chooseIsImg(bool) {
   console.log("Choose IS bool: " + bool);
   if (bool) {
     console.log("The real IS");
-    return `/img/is.svg`;
+    return `img/is.svg`;
   } else {
-    return `/img/nonis.svg`;
+    return `img/nonis.svg`;
   }
 }
 
